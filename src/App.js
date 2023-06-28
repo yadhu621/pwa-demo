@@ -1,25 +1,27 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [orientation, setOrientation] = useState('');
+
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      setOrientation(window.matchMedia('(orientation: portrait)').matches ? 'Hi' : 'Hello');
+    };
+
+    window.addEventListener('resize', handleOrientationChange);
+    handleOrientationChange();
+
+    return () => {
+      window.removeEventListener('resize', handleOrientationChange);
+    };
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>{orientation}</h1>
     </div>
   );
-}
+};
 
 export default App;
